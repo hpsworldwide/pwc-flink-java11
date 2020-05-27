@@ -49,6 +49,9 @@ RUN set -ex; \
   rm flink.tgz; \
   \
   chown -R flink:flink .;
+  
+# Activate queryable state runtime
+RUN cp /opt/flink/opt/flink-queryable-state-runtime_2.12-1.10.1.jar /opt/flink/lib
 
 COPY docker-entrypoint.sh /
 
