@@ -26,7 +26,7 @@ RUN set -ex; \
   gosu nobody true
 
 # Configure Flink version
-ENV FLINK_VERSION=1.10.1 \
+ENV FLINK_VERSION=1.10.2 \
     SCALA_VERSION=2.12 \
     GPG_KEY=BB137807CEFBE7DD2616556710B12A1F89C115E8
 
@@ -51,7 +51,11 @@ RUN set -ex; \
   chown -R flink:flink .;
   
 # Activate queryable state runtime
-RUN cp /opt/flink/opt/flink-queryable-state-runtime_2.12-1.10.1.jar /opt/flink/lib
+RUN cp /opt/flink/opt/flink-queryable-state-runtime_${SCALA_VERSION}-${FLINK_VERSION}.jar /opt/flink/lib && \
+    cp /opt/flink/opt/flink-metrics-prometheus-*.jar  /opt/flink/opt/flink-s3-fs-presto-*.jar /opt/flink/lib/ && \
+    wget -q https://repo1.maven.org/maven2/com/github/oshi/oshi-core/3.4.0/oshi-core-3.4.0.jar -O /opt/flink/lib/oshi-core-3.4.0.jar && \
+    wget -q https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.4.0/jna-5.4.0.jar -O /opt/flink/lib/jna-5.4.0.jar && \
+    wget -q https://repo1.maven.org/maven2/net/java/dev/jna/jna-platform/5.4.0/jna-platform-5.4.0.jar -O /opt/flink/lib/jna-platform-5.4.0.jar
 
 COPY docker-entrypoint.sh /
 
